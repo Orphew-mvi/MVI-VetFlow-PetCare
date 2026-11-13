@@ -1,0 +1,71 @@
+---
+import CartButton from "../components/storefront/CartButton";
+import CartDrawer from "../components/storefront/CartDrawer";
+import { fetchCategories } from "../wix/storefront/catalog";
+import type { Category } from "../wix/storefront/types";
+import "../styles/global.css";
+interface Props { title: string; description?: string; }
+const { title, description } = Astro.props;
+let navCategories: Category[] = [];
+try { navCategories = (await fetchCategories()).slice(0, 6); } catch { /* nav still works */ }
+---
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {!Astro.slots.has("seo-tags") && <title>MVI VetFlow - {title}</title>}
+  {description && <meta name="description" content={description} />}
+  <slot name="seo-tags" />
+</head>
+<body>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="/" aria-label="MVI VetFlow, início"><img src="/images/mvi-logo.webp" alt="" width="45" height="45" /><span class="brand-copy"><strong><span class="brand-mvi">MVI</span> <span class="brand-vetflow">VetFlow</span></strong><small><span class="brand-petcare">PetCare</span> · <span class="brand-connecta">Pet Connecta</span></small></span></a>
+    <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    <nav id="primary-nav" aria-label="Navegação principal"><a href="/">Início</a><a href="/atendimento">Atendimento</a><a href="/shop">Catálogo</a>{navCategories.map(c => <a class="category-link" href={`/category/${c.slug}`}>{c.name}</a>)}<CartButton client:only="react" /><a class="admin-link" href="/controle" aria-label="Abrir administração MVI VetFlow"><span aria-hidden="true">⚙</span> Admin</a></nav>
+  </div></header>
+  <main><slot /></main>
+  <footer><div class="footer-inner"><div><strong><span class="brand-mvi">MVI</span> <span class="brand-vetflow">VetFlow</span> | <span class="brand-petcare">PetCare</span> | <span class="brand-connecta">Pet Connecta</span></strong><p>Atendimento veterinário e projetos digitais de cuidado animal.</p></div><div class="footer-right"><a href="/atendimento">Converse sobre atendimento</a><p>Disponibilidade, local e indicação clínica são confirmados individualmente.</p><small class="production-signature">Produzido por <span>MVI Tech</span> <span aria-hidden="true">|</span> <em>Orphew</em> ©</small></div></div></footer>
+  <CartDrawer client:only="react" />
+  <script>
+    const menuButton = document.querySelector<HTMLButtonElement>(".menu-toggle");
+    const navigation = document.querySelector<HTMLElement>("#primary-nav");
+    const closeMenu = () => {
+      menuButton?.setAttribute("aria-expanded", "false");
+      menuButton?.setAttribute("aria-label", "Abrir menu");
+      navigation?.classList.remove("is-open");
+    };
+    menuButton?.addEventListener("click", () => {
+      const open = menuButton.getAttribute("aria-expanded") !== "true";
+      menuButton.setAttribute("aria-expanded", String(open));
+      menuButton.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+      navigation?.classList.toggle("is-open", open);
+    });
+    navigation?.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a")) closeMenu();
+    });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMenu(); });
+    window.addEventListener("resize", () => { if (window.innerWidth > 800) closeMenu(); });
+  </script>
+  <script is:inline>
+    (() => {
+      let pending = false;
+      let lastAttempt = 0;
+      function countVisibleVisit() {
+        if (document.visibilityState !== "visible" || pending || Date.now() - lastAttempt < 5000) return;
+        pending = true;
+        lastAttempt = Date.now();
+        fetch("/api/visit", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "X-PetFlow-Visit": "1" },
+          cache: "no-store",
+          keepalive: true
+        }).catch(() => {}).finally(() => { pending = false; });
+      }
+      document.addEventListener("visibilitychange", countVisibleVisit);
+      window.addEventListener("pageshow", countVisibleVisit);
+      countVisibleVisit();
+    })();
+  </script>
+</body>
+</html>

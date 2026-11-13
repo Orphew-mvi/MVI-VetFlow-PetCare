@@ -1,0 +1,6 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+const result = Astro.url.searchParams.get("resultado");
+const message = result === "sucesso" ? "Você voltou do Mercado Pago. A equipe confirmará o pagamento na conta antes de marcar o atendimento." : result === "pendente" ? "O pagamento pode estar em análise. Aguarde a confirmação do Mercado Pago." : "O pagamento não foi concluído ou foi interrompido. Você pode voltar ao catálogo ou falar conosco.";
+---
+<SiteLayout title="Pagamento"><main class="wrap" style="padding-block:7rem;min-height:60vh"><span class="kicker">MVI VETFLOW</span><h1>Resultado do pagamento</h1><p>{message}</p><p>A compra não marca automaticamente a consulta ou vacinação. Confirme data, local e adequação clínica com a equipe.</p><a class="button gold" href="/atendimento">Voltar ao atendimento</a></main></SiteLayout>

@@ -1,0 +1,65 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { searchCatalog } from "../wix/storefront/catalog";
+import type { ProductSummary } from "../wix/storefront/types";
+let products: ProductSummary[] = [];
+const featuredProductIds = [
+  "267aae1e-e9de-4813-b0de-d90e8b714132", // Consulta clínico geral · pequeno porte · R$ 170
+  "75817cc0-6b40-45e5-bed8-92147ee08845", // Endoscopia Veterinária MVI · R$ 180
+  "2f3f0e00-b114-4d90-aa76-3f5201909611", // Consulta clínico geral · grande porte · R$ 350
+];
+try {
+  const found = new Map<string, ProductSummary>();
+  const visitedCursors = new Set<string>();
+  let cursor: string | null = null;
+  while (found.size < featuredProductIds.length) {
+    const page = await searchCatalog({ limit: 100, cursor });
+    for (const product of page.products) if (featuredProductIds.includes(product.id)) found.set(product.id, product);
+    if (!page.hasMore || !page.nextCursor || visitedCursors.has(page.nextCursor)) break;
+    visitedCursors.add(page.nextCursor);
+    cursor = page.nextCursor;
+  }
+  products = featuredProductIds.flatMap(id => found.has(id) ? [found.get(id)!] : []);
+} catch { /* visible empty state */ }
+---
+<SiteLayout title="Atendimento e cuidado animal" description="Converse sobre atendimento veterinário PetCare e conheça MVI VetFlow e Pet Connecta.">
+  <section class="hero petcare-home-hero">
+    <video class="hero-backdrop hero-video" autoplay muted loop playsinline preload="metadata" poster="/images/mvi-serra.webp" aria-hidden="true"></video>
+    <div class="hero-shade"></div>
+    <div class="petcare-hero-inner">
+      <div class="hero-content">
+        <span class="eyebrow">PETCARE · MEDICINA VETERINÁRIA INTEGRATIVA</span>
+        <h1><span class="hero-title-gradient">Mais clareza para cuidar de quem está ao seu lado.</span></h1>
+        <p>Converse sobre atendimento veterinário e encontre o melhor próximo passo para o seu pet.</p>
+        <div class="hero-actions"><a class="button gold" href="/atendimento#pre-cadastro">Solicitar atendimento</a><a class="button outline" href="#ecossistema">Conheça o projeto</a></div>
+      </div>
+      <figure class="petcare-hero-poster">
+        <img src="/images/vetflow-apresentacao.png" width="941" height="1672" alt="Pôster MVI VetFlow PetCare com Meg e um gato Maine Coon. Dr. Francesco Carboni, médico veterinário CRMV-PR 5622. Consultas, vacinação, exames, odontologia e terapias integrativas." fetchpriority="high" />
+      </figure>
+    </div>
+  </section>
+  <aside class="notice"><strong>Atendimento PetCare</strong><span>Disponibilidade, local e valores são confirmados individualmente antes do agendamento.</span></aside>
+  <section class="wrap" id="ecossistema"><span class="kicker">TRÊS FRENTES · UMA VISÃO</span><h2>Cada experiência tem uma função clara.</h2><div class="features">
+    <article><b>01</b><h3>PetCare</h3><p>Atendimento veterinário integrativo. Conte o que seu pet precisa e combine disponibilidade com a equipe.</p><a href="/atendimento">Conversar sobre atendimento →</a></article>
+    <article><b>02</b><h3>MVI VetFlow</h3><p>Uma vitrine de serviços selecionados com descrições claras e um caminho de compra confiável.</p><a href="/shop">Explorar o catálogo →</a></article>
+    <article><b>03</b><h3>Pet Connecta</h3><p>Um protótipo para tutores. As funções de acesso e dados reais ainda estão em desenvolvimento.</p><img class="pet-mark" src="/images/pet-connecta.webp" alt="Identidade visual Pet Connecta" loading="lazy" /></article>
+  </div></section>
+  <section class="wrap teaser"><div><span class="kicker">COMECE PELO CUIDADO</span><h2>Seu próximo passo pode começar com uma conversa.</h2><p>Explique onde você está e o que precisa para seu pet. A equipe confirma se há disponibilidade e como seguir.</p><a class="button gold" href="/atendimento">Falar sobre atendimento</a></div>{products.length ? <div class="teaser-grid">{products.map(p => <a href={`/products/${p.slug}`}><div class="photo">{p.imageUrl ? <img src={p.imageUrl} alt={p.name} /> : <span>Imagem em preparação</span>}</div><h3>{p.name}</h3><p>{p.price}</p></a>)}</div> : <div class="empty"><span>✦</span><h3>Loja em preparação</h3><p>A seleção de produtos VetFlow virá depois. Agora estamos priorizando o atendimento PetCare.</p></div>}</section>
+<script>
+  const video = document.querySelector<HTMLVideoElement>(".hero-video");
+  const mobile = window.matchMedia("(max-width: 640px)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function selectHeroVideo() {
+    if (!video) return;
+    if (reducedMotion.matches) { video.pause(); video.removeAttribute("src"); return; }
+    const src = mobile.matches ? "/videos/vetflow-mobile.mp4" : "/videos/vetflow-desktop.mp4";
+    if (video.getAttribute("src") === src) return;
+    video.src = src;
+    video.load();
+    video.play().catch(() => {});
+  }
+  mobile.addEventListener("change", selectHeroVideo);
+  reducedMotion.addEventListener("change", selectHeroVideo);
+  selectHeroVideo();
+</script>
+</SiteLayout>

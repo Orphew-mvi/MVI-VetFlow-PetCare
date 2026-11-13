@@ -1,0 +1,12 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import ShopView from "../components/storefront/ShopView";
+import { searchCatalog, fetchCategories } from "../wix/storefront/catalog";
+import type { Category, ProductSummary } from "../wix/storefront/types";
+let products: ProductSummary[] = [];
+let categories: Category[] = [];
+try { const [catalog, nav] = await Promise.all([searchCatalog({ limit: 24, sort: "priceAsc" }), fetchCategories()]); products = catalog.products; categories = nav; } catch { /* island shows empty state */ }
+---
+<SiteLayout title="Catálogo" description="Conheça os serviços PetCare com preços publicados e solicite atendimento.">
+  <div class="catalog-stage"><video class="catalog-stage-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="/videos/orphew-mvi-pt3.mp4" type="video/mp4" /></video><div class="catalog-stage-wash" aria-hidden="true"></div><div class="shop-wrap"><span class="kicker">MVI VETFLOW</span><h1>Catálogo de cuidados</h1><p class="shop-intro">Escolha consultas, consultorias, vacinação, endoscopia, protocolo obstétrico e o preparo personalizado de óleo ozonizado. Pague com Pix ou cartão pelo Mercado Pago, sem boleto. A compra não agenda atendimento nem define um protocolo: confirme indicação, preparo e entrega com a equipe.</p><a class="button gold" href="/atendimento#servicos">Ver todos os cuidados</a><ShopView client:load initialProducts={products} initialCategories={categories} /></div></div>
+</SiteLayout>

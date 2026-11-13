@@ -1,0 +1,8 @@
+---
+import PetFlowAdminPanel from "../components/PetFlowAdminPanel";
+import "../styles/global.css";
+import "../styles/admin-dashboard.css";
+export const prerender = false;
+Astro.response.headers.set("Cache-Control", "no-store");
+---
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex,nofollow" /><title>MVI VetFlow - Administração</title></head><body class="admin-page"><header class="admin-site-header"><a href="/" class="admin-wordmark"><span class="brand-mvi">MVI</span> <span class="brand-vetflow">VetFlow</span><small>ÁREA ADMINISTRATIVA</small></a><a href="/">Voltar ao site ↗</a></header><PetFlowAdminPanel client:load /></body></html>

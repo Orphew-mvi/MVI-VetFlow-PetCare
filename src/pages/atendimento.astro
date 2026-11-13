@@ -1,0 +1,37 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PetCareEnquiryForm from "../components/PetCareEnquiryForm";
+import ServiceCartButton from "../components/ServiceCartButton";
+import { getForm } from "../wix/forms/forms";
+import { items } from "@wix/data";
+const contact = "https://wa.me/5541996208327?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20atendimento%20PetCare.";
+let initialForm;
+try { initialForm = await getForm("b61d8f4f-b91a-4d58-966f-add9875ed345"); } catch { /* client can retry without interrupting the WhatsApp path */ }
+const services = [
+  { number: "01", title: "Consulta clínico geral · pequeno porte", description: "Pets de pequeno porte. Atendimento sujeito à confirmação de local e agenda.", price: 170 },
+  { number: "02", title: "Consulta especialista MVI · pequeno porte", description: "Pets de pequeno porte. Especialidade e disponibilidade confirmadas no contato.", price: 250 },
+  { number: "03", title: "Consulta clínico geral · grande porte", description: "Animais de criação e grande porte. Local e condições confirmados no contato.", price: 350 },
+  { number: "04", title: "Consulta especialista MVI · grande porte", description: "Animais de criação e grande porte. Especialidade e local confirmados no contato.", price: 450 },
+  { number: "05", title: "Consultoria MVI · pequeno porte", description: "Escopo, formato e disponibilidade combinados antes do atendimento.", price: 300 },
+  { number: "06", title: "Consultoria MVI · grande porte", description: "Escopo, formato e disponibilidade combinados antes do atendimento.", price: 500 },
+  { number: "07", title: "Vacina multiviral · caninos", description: "Aplicação conforme avaliação, histórico vacinal e disponibilidade.", price: 140 },
+  { number: "08", title: "Vacina multiviral · felinos", description: "Aplicação conforme avaliação, histórico vacinal e disponibilidade.", price: 150 },
+  { number: "09", title: "Vacina antirrábica", description: "Espécie, indicação e disponibilidade confirmadas antes do atendimento.", price: 120 },
+  { number: "10", title: "Óleo Ozonizado MVI | Lesão & Pele", description: "Por que usar a mesma fórmula em casos diferentes? Preparo personalizado conforme o protocolo de cada animal. Indicação, composição, volume, modo de uso e entrega são confirmados antes do preparo. Uso sob orientação veterinária.", price: 85 },
+  { number: "11", title: "Endoscopia Veterinária MVI", description: "Cada caso exige avaliação individual. Indicação, preparo e disponibilidade são confirmados pela equipe. Exames complementares específicos, quando necessários, são informados e orçados separadamente antes da realização.", price: 180 },
+  { number: "12", title: "Protocolo Atendimento Obstétrico MVI | Pequeno Porte", description: "Protocolo personalizado para a matriz e o plantel: pré-natal, acompanhamento gestacional e planejamento de riscos. Uma possível cesárea programada depende de avaliação veterinária; exames, anestesia e cirurgia são orçados separadamente.", price: 700 },
+];
+const serviceLink = (title: string, price: number) => `https://wa.me/5541996208327?text=${encodeURIComponent(`Olá, quero solicitar ${title} (R$ ${price}). Qual a disponibilidade em minha região?`)}`;
+const serviceIds = new Map<string, string>();
+try {
+  const catalog = await items.query("PetFlowServices", { paging: { limit: 100, offset: 0 }, fields: ["title"] });
+  for (const item of catalog.items || []) if (typeof item.title === "string" && typeof item._id === "string") serviceIds.set(item.title, item._id);
+} catch { /* pré-cadastro e WhatsApp continuam disponíveis */ }
+---
+<SiteLayout title="Atendimento PetCare" description="Converse sobre atendimento veterinário integrativo PetCare. Disponibilidade e detalhes confirmados individualmente.">
+  <section class="care-hero"><div class="wrap"><span class="kicker">PETCARE · ATENDIMENTO</span><h1>Vamos entender o que seu pet precisa.</h1><p>Conte sua cidade, a espécie do pet e o motivo do contato. A disponibilidade e o melhor encaminhamento serão confirmados individualmente.</p><a class="button gold" href={contact} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a></div></section>
+  <section class="wrap" id="servicos"><span class="kicker">CATÁLOGO PETCARE</span><h2>Escolha o cuidado.</h2><p>Preços informados pelo responsável. Monte o carrinho e pague com Pix ou cartão pelo Mercado Pago, sem boleto. O pagamento não agenda atendimento nem define um protocolo: confirme data, local, indicação clínica e detalhes do preparo com a equipe.</p><div class="features services-grid">{services.map(service => <article><b>{service.number}</b><h3>{service.title}</h3><p>{service.description}</p><strong class="service-price-pending">{service.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong>{serviceIds.get(service.title) && <ServiceCartButton client:load serviceId={serviceIds.get(service.title)!} title={service.title} price={service.price} />}<div class="service-actions"><a href="#pre-cadastro">Fazer pré-cadastro →</a><a href={serviceLink(service.title, service.price)} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></article>)}</div><p class="services-note">Atendimento no Litoral, em Curitiba e na Região Metropolitana, conforme agenda. Vacinas dependem de avaliação e disponibilidade. O óleo ozonizado é personalizado; composição, volume, uso e entrega são confirmados por contato. Procedimentos cirúrgicos, demais terapias integrativas e antiparasitários recebem orçamento individual após avaliação.</p></section>
+  <section class="enquiry-section" id="pre-cadastro"><div class="wrap enquiry-layout"><div><span class="kicker">SOLICITAR ATENDIMENTO</span><h2>Faça um pré-cadastro rápido.</h2><p>Informe seus dados de contato, cidade e o assunto da conversa. Confirmaremos disponibilidade e próximos passos antes de qualquer agendamento.</p><a href={contact} target="_blank" rel="noopener noreferrer">Prefere conversar agora? Abrir WhatsApp →</a></div><PetCareEnquiryForm client:load initialForm={initialForm} /></div></section>
+  <section class="wrap"><span class="kicker">COMO FUNCIONA</span><h2>Uma conversa clara, passo a passo.</h2><div class="features"><article><b>01</b><h3>Você conta</h3><p>Informe sua cidade, espécie do pet e o que motivou o contato. Evite enviar dados clínicos sensíveis antes de combinar um canal apropriado.</p></article><article><b>02</b><h3>Confirmamos</h3><p>A equipe verifica disponibilidade, local, formato e valores antes de agendar.</p></article><article><b>03</b><h3>Combinamos</h3><p>Você recebe a orientação sobre os próximos passos. Uma mensagem não substitui avaliação veterinária.</p></article></div></section>
+  <section class="wrap teaser"><div><span class="kicker">ÁREAS DE ATUAÇÃO</span><h2>Litoral, Curitiba e Região Metropolitana.</h2><p>O local e a agenda de cada atendimento são confirmados durante o contato.</p></div><div class="empty"><h3>Pronto para conversar?</h3><p>Use o canal de WhatsApp divulgado no site PetCare.</p><a class="button gold" href={contact} target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a></div></section>
+</SiteLayout>

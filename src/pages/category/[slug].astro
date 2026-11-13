@@ -1,0 +1,37 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import ShopView from "../../components/storefront/ShopView";
+import { fetchCategoryBySlug, fetchProductsByCategory, fetchCategories } from "../../wix/storefront/catalog";
+import type { Category, ProductSummary } from "../../wix/storefront/types";
+import { WIX_APPS } from "@wix/essentials";
+import { SEO } from "@wix/seo/components";
+import { loadSEOTagsServiceConfig } from "@wix/seo/services";
+import { seoTags } from "@wix/seo";
+export const wixMetadata = {
+  appDefId: WIX_APPS.checkoutAndOrders.id,
+  pageIdentifier: WIX_APPS.checkoutAndOrders.categoryPageMetadata.pageIdentifier,
+  identifiers: { slug: WIX_APPS.checkoutAndOrders.categoryPageMetadata.identifiers.collection },
+};
+const slug = Astro.params.slug!;
+const forwardedUrl = Astro.request.headers.get("x-wix-forwarded-url");
+const pageUrl = forwardedUrl && URL.canParse(forwardedUrl) && /^https?:$/.test(new URL(forwardedUrl).protocol) ? forwardedUrl : Astro.url.href;
+let category: Category | null = null;
+let products: ProductSummary[] = [];
+let categories: Category[] = [];
+let seoTagsServiceConfig = null;
+try {
+  category = await fetchCategoryBySlug(slug);
+  if (category) {
+    const itemType = category.parentId ? seoTags.ItemType.STORES_SUB_CATEGORY : seoTags.ItemType.STORES_CATEGORY;
+    [products, categories, seoTagsServiceConfig] = await Promise.all([
+      fetchProductsByCategory(category.id, { limit: 24 }), fetchCategories(),
+      loadSEOTagsServiceConfig({ pageUrl, itemType, itemData: { slug } }),
+    ]);
+  }
+} catch { /* guarded SSR */ }
+if (!category) return new Response(null, { status: 404 });
+---
+<SiteLayout title={category.name}>
+  <SEO.Tags seoTagsServiceConfig={seoTagsServiceConfig} slot="seo-tags" />
+  <div class="shop-wrap"><nav aria-label="Caminho" class="text-sm"><a href="/">Início</a>{category.breadcrumbs.map(b => <span> › <a href={`/category/${b.slug}`}>{b.name}</a></span>)}</nav><h1>{category.name}</h1>{category.description && <p class="shop-intro">{category.description}</p>}<ShopView client:load initialProducts={products} initialCategories={categories} initialCategoryId={category.id} /></div>
+</SiteLayout>

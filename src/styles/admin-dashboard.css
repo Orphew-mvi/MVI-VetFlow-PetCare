@@ -1,0 +1,124 @@
+.petflow-admin-dashboard{padding-top:36px}
+.petflow-dashboard-active{background:linear-gradient(115deg,#061e17,#082a32)!important;color:#f7f7ec!important}
+.petflow-dashboard-active .admin-site-header{background:#061d18;border-bottom:1px solid #295443}
+.petflow-dashboard-active .admin-wordmark small{color:#e2bc65}
+.petflow-dashboard-active .admin-site-header>a:last-child{color:#e7c66e}
+.petflow-admin-dashboard .admin-card{background:#0d3429;border-color:#35604c;border-top:3px solid #d9ad4c;color:#f8f7ed;box-shadow:0 18px 42px rgba(0,0,0,.15)}
+.petflow-admin-dashboard .admin-card p,.petflow-admin-dashboard>p,.petflow-admin-dashboard .admin-topline p{color:#c7d9cc}
+.petflow-admin-dashboard .admin-card h2,.petflow-admin-dashboard .admin-card h3{color:#fff}
+.petflow-admin-dashboard .admin-card th{color:#f2cf75}
+.petflow-admin-dashboard .admin-card td{border-bottom-color:#285441}
+.petflow-admin-dashboard .admin-card a{color:#f2cf75}
+.petflow-admin-dashboard .admin-card input,.petflow-admin-dashboard .admin-card select{color:#153b2b}
+.petflow-admin-dashboard .admin-card .admin-status{color:#ffd69c!important}
+.petflow-admin-dashboard .admin-topline h1{color:#f2cf75}
+.petflow-admin-dashboard .petflow-admin-nav a{background:#12382d;color:#f4d47e;border-color:#486e56}
+.petflow-admin-dashboard .petflow-lifetime{background:#102d23;color:#eadcb4;border-color:#b48d36}
+.petflow-admin-dashboard .petflow-lifetime strong{color:#f2c85f}
+.petflow-admin-dashboard .admin-topline button,.petflow-admin-dashboard .admin-section-head button{background:#0a2c23;border-color:#557661;color:#f2cf75}
+.petflow-admin-dashboard>.admin-card{margin:0 0 22px}
+.payment-setup{max-width:760px;display:grid;gap:10px}
+.payment-setup label{font-weight:700;font-size:13px}
+.payment-setup input{width:100%;padding:12px;border:1px solid #a7bdac;border-radius:9px;background:#fffdf7;font:inherit}
+.payment-setup-actions{display:flex;gap:10px;flex-wrap:wrap}
+.payment-setup-actions button{padding:10px 16px;border:1px solid #d7ad53;border-radius:8px;background:#e6bd63;color:#102b22;font-weight:800;cursor:pointer}
+.payment-setup-actions button:disabled{opacity:.5;cursor:not-allowed}
+.petflow-top-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.petflow-lifetime{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid #b89442;border-radius:8px;text-decoration:none;color:#15543f;background:#fffaf0;font-size:12px;font-weight:700}
+.petflow-lifetime strong{font-size:20px;color:#a57b22;font-variant-numeric:tabular-nums}
+.petflow-admin-nav{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0}
+.petflow-admin-nav a{padding:10px 15px;border:1px solid #c9d8c7;border-radius:9px;background:#fff;text-decoration:none;color:#165a46;font-weight:800;font-size:13px}
+.petflow-admin-nav a:hover,.petflow-admin-nav a:focus-visible{border-color:#ad8838;background:#fffaf0}
+.petflow-audience-tools,.petflow-contact-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.petflow-audience-tools label{font-weight:700;font-size:13px}
+.petflow-audience-tools select{border:1px solid #bdd0c4;border-radius:8px;padding:8px;background:#fbf7ed;color:#14382c;font:inherit}
+.petflow-audience-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #dce4d8;border-bottom:1px solid #dce4d8;margin:20px 0;padding:16px 0;gap:16px}
+.petflow-admin-dashboard .petflow-audience-kpis{border-color:#315a47}
+.petflow-admin-dashboard .petflow-audience-kpis span{color:#b9d2c2}
+.petflow-admin-dashboard .petflow-audience-kpis strong{color:#f2c85f}
+.petflow-reconcile{display:flex;gap:10px;flex-wrap:wrap;padding:12px 15px;margin:0 0 20px;background:#164437;border:1px solid #5e7d55;border-radius:9px;font-size:13px;color:#e4f0de}
+.petflow-reconcile strong{color:#f2c85f}
+.petflow-map-source{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:24px 0 8px;padding:15px 18px;border:1px solid #52765a;border-left:4px solid #e2ba58;border-radius:9px;background:#153e31}
+.petflow-map-source h3{margin:0 0 4px}
+.petflow-map-source p{margin:0;font-size:13px}
+.petflow-source-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.petflow-source-buttons button{border:1px solid #728a6b;border-radius:7px;background:#0b2d23;color:#e9e7d9;padding:8px 11px;cursor:pointer;font-weight:700}
+.petflow-source-buttons button.active{background:#e4b957;border-color:#e4b957;color:#102c21}
+.petflow-source-buttons button:disabled{opacity:.5;cursor:not-allowed}
+.petflow-audience-kpis span{display:block;color:#617467;font-size:12px}
+.petflow-audience-kpis strong{display:block;color:#147052;font-size:29px;font-variant-numeric:tabular-nums;line-height:1.25;margin-top:5px}
+.petflow-audience-kpis .petflow-leader{font-size:17px;line-height:1.5}
+.petflow-audience h3{font-size:17px;margin:26px 0 11px}
+.petflow-chart-note{font-size:12px;font-weight:500;color:#617467}
+.petflow-visit-chart{display:flex;align-items:end;gap:3px;height:110px;padding:8px 4px 0;border-bottom:1px solid #c8d6cb;background:linear-gradient(0deg,#e8f1e8,transparent)}
+.petflow-admin-dashboard .petflow-visit-chart{background:linear-gradient(0deg,#184536,#103629);border-color:#39604e}
+.petflow-admin-dashboard .petflow-visit-bar span{background:#f0c657}
+.petflow-admin-dashboard .petflow-chart-axis{color:#bcd4c4}
+.petflow-visit-bar{height:100%;flex:1;display:flex;align-items:end;min-width:2px}
+.petflow-visit-bar span{display:block;width:100%;background:linear-gradient(0deg,#19785a,#d5aa50);border-radius:3px 3px 0 0}
+.petflow-chart-axis{display:flex;justify-content:space-between;color:#65796c;font-size:12px;margin-top:5px}
+.petflow-audience-ranks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:25px;margin-top:15px;align-items:start}
+.petflow-ranks-panel,.petflow-map-panel{min-width:0}
+.petflow-state-list{max-height:30.5rem;overflow:auto;overscroll-behavior:contain;padding:0 9px 0 0;scrollbar-color:#a98b46 #e8efe8;scrollbar-width:thin}
+.petflow-state-list:focus-visible{outline:2px solid #a98b46;outline-offset:2px}
+.petflow-rank-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;margin:0 0 13px;align-items:center;font-size:13px}
+.petflow-rank-line span{overflow-wrap:anywhere}
+.petflow-admin-dashboard .petflow-rank-line{border-bottom:1px solid #265542;padding-bottom:5px}
+.petflow-admin-dashboard .petflow-rank-line strong{color:#f0c657}
+.petflow-admin-dashboard .petflow-rank-line progress{accent-color:#f0c657}
+.petflow-admin-dashboard .petflow-rank-line progress::-webkit-progress-bar{background:#174433}
+.petflow-admin-dashboard .petflow-rank-line progress::-webkit-progress-value{background:#f0c657}
+.petflow-rank-line strong{white-space:nowrap;font-variant-numeric:tabular-nums}
+.petflow-rank-line progress{grid-column:1/-1;width:100%;height:6px;accent-color:#b89442;border:0}
+.petflow-rank-line progress::-webkit-progress-bar{background:#e7eee7}
+.petflow-rank-line progress::-webkit-progress-value{background:#b89442}
+.petflow-unknown,.petflow-map-caption{font-size:12px;color:#617467}
+.petflow-admin-dashboard .petflow-unknown,.petflow-admin-dashboard .petflow-map-caption{color:#bed4c4}
+.petflow-map-stage{display:grid;place-items:center;position:relative;isolation:isolate;min-height:310px;overflow:hidden;border:1px solid rgba(186,147,65,.35);border-radius:15px;background:#06221a;color:#dbe8d8;padding:10px}
+.petflow-map-stage::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,rgba(5,27,22,.88),rgba(5,27,22,.72)),url('/assets/brand/brasil-map.png') center/cover;opacity:.65}
+.petflow-brazil-map{width:100%;max-height:510px;display:block;filter:drop-shadow(0 12px 24px rgba(0,0,0,.32))}
+.petflow-map-state{fill:#14513b;stroke:#a7d6b0;stroke-width:1.1;stroke-linejoin:round;transition:fill .2s,stroke .2s}
+.petflow-map-state[data-level="low"]{fill:#238360;stroke:#e5f6d4}
+.petflow-map-state[data-level="medium"]{fill:#58ad62;stroke:#fff0af}
+.petflow-map-state[data-level="high"]{fill:#d4a017;stroke:#fff3c3}
+.petflow-map-state:hover{stroke:#fff;stroke-width:2}
+.petflow-map-leader{stroke:#f0c65e;stroke-width:1.5;opacity:.9}
+.petflow-map-badge rect{fill:#071b16;stroke:#f0c65e;stroke-width:1.2}
+.petflow-map-badge text{font-family:Montserrat,"Segoe UI",Arial,sans-serif;fill:#fff;dominant-baseline:middle;paint-order:stroke;stroke:#071b16;stroke-width:.8}
+.petflow-map-code{font-size:10px;font-weight:600;letter-spacing:1px}
+.petflow-map-percent{fill:#f0c65e!important;font-size:13px;font-weight:800}
+.petflow-outside{margin-top:22px;padding:16px 18px;background:#f4f8f2;border:1px solid #dce4d8;border-radius:11px}
+.petflow-admin-dashboard .petflow-outside{background:#103c2e;border-color:#3e6650}
+.petflow-admin-dashboard .petflow-outside th,.petflow-admin-dashboard .petflow-outside td{border-color:#2e5b46}
+.petflow-outside-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.petflow-outside h3{margin:0}
+.petflow-outside-head strong{white-space:nowrap;color:#185a45;font-variant-numeric:tabular-nums}
+.petflow-outside p{font-size:12px;color:#617467;margin:8px 0 12px}
+.petflow-outside table{width:100%;border-collapse:collapse;font-size:13px}
+.petflow-outside th,.petflow-outside td{padding:9px 6px;border-bottom:1px solid #dce4d8;text-align:left}
+.petflow-outside th:not(:first-child),.petflow-outside td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.petflow-country-list{max-height:180px;overflow:auto;scrollbar-color:#a98b46 #e8efe8;scrollbar-width:thin}
+.petflow-country-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid #dce4d8;font-size:13px}
+.petflow-country-row strong{white-space:nowrap;font-variant-numeric:tabular-nums}
+.petflow-state-history{margin:24px 0;padding:17px;border:1px solid #dce4d8;border-radius:11px}
+.petflow-admin-dashboard .petflow-state-history{border-color:#3e6650;background:#103c2e}
+.petflow-admin-dashboard .petflow-state-history summary{color:#f2cf75}
+.petflow-state-history summary{cursor:pointer;font-weight:800;color:#175b45}
+.petflow-lead-search{display:flex;flex-direction:column;gap:6px;max-width:510px;margin:18px 0}
+.petflow-lead-search label{font-weight:700;font-size:13px}
+.petflow-lead-search input{border:1px solid #bdd0c4;border-radius:9px;padding:10px;font:inherit}
+.petflow-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;font-size:13px}
+.petflow-pagination button{background:#fff;border:1px solid #bdd0c4;border-radius:9px;padding:8px 15px;color:#17614c;cursor:pointer;font-weight:800}
+.petflow-pagination button:disabled{opacity:.5;cursor:default}
+.petflow-lead-detail{margin-top:18px;padding:18px;border:1px solid #dce4d8;border-radius:11px;background:#fbfdf9}
+.petflow-lead-detail h3{margin:0}
+.petflow-lead-detail dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:0}
+.petflow-lead-detail dt{font-size:12px;color:#65796c}
+.petflow-lead-detail dd{margin:2px 0 0;overflow-wrap:anywhere;font-weight:700}
+.petflow-telegram-pair{margin-top:16px;padding:16px;border:1px solid #d3e2d4;border-radius:10px;background:#fff}
+.petflow-telegram-pair label{display:block;font-weight:700}
+.petflow-telegram-pair input{width:min(100%,460px);margin:6px 8px 6px 0;border:1px solid #bdd0c4;border-radius:8px;padding:9px}
+#notifications>.admin-card{background:#f7faf4;box-shadow:none;margin-top:18px}
+.petflow-admin-dashboard #notifications>.admin-card{background:#164638;border-color:#456d55;color:#fff}
+@media(max-width:800px){.petflow-audience-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.petflow-audience-ranks{grid-template-columns:1fr}.petflow-state-list{max-height:20rem}.admin-section-head{align-items:flex-start;flex-wrap:wrap}}
+@media(max-width:520px){.petflow-admin-dashboard{padding-top:25px}.petflow-admin-nav a{flex:1 1 auto;text-align:center}.petflow-audience-kpis strong{font-size:25px}.petflow-map-stage{min-height:250px}.petflow-audience-tools{width:100%}.petflow-contact-tools{width:100%}.petflow-lead-detail dl{grid-template-columns:1fr}.petflow-outside-head{align-items:flex-start;flex-direction:column;gap:3px}}
