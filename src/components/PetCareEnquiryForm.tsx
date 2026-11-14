@@ -1,10 +1,25 @@
+import { useState } from "react";
 import { useWixForm, FORM_ERROR } from "../hooks/forms/useWixForm";
 import type { FormDto } from "../wix/forms/types";
+import { formatPetCarePhone, normalizePetCarePhone, validPetCarePhone } from "../lib/petcare-phone";
 
 const FORM_ID = "b61d8f4f-b91a-4d58-966f-add9875ed345";
 
 export default function PetCareEnquiryForm({ initialForm }: { initialForm?: FormDto }) {
   const form = useWixForm(FORM_ID, { initialForm });
+  const [phoneError, setPhoneError] = useState("");
+
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const phone = form.form?.fields.find(field => field.control === "phone");
+    if (phone && !validPetCarePhone(String(form.values[phone.target] ?? ""))) {
+      setPhoneError("Informe o DDD e o número completo. Para outro país, comece com + e o código do país.");
+      document.getElementById(`petcare-${phone.target}`)?.focus();
+      return;
+    }
+    setPhoneError("");
+    void form.submit(event);
+  }
 
   if (form.outcome) {
     return <div className="enquiry-success" role="status"><strong>Pedido recebido.</strong><p>{form.outcome.message || "Entraremos em contato pelos dados informados para confirmar disponibilidade e próximos passos."}</p><button type="button" onClick={form.reset}>Enviar outro pedido</button></div>;
@@ -16,15 +31,17 @@ export default function PetCareEnquiryForm({ initialForm }: { initialForm?: Form
     return <p className="enquiry-status" role="status">{form.form.disabledMessage || "O pré-cadastro está indisponível no momento. Entre em contato pelo WhatsApp."}</p>;
   }
 
-  return <form className="enquiry-form" noValidate onSubmit={event => { void form.submit(event); }}>
+  return <form className="enquiry-form" autoComplete="off" noValidate onSubmit={submit}>
     <div className="enquiry-fields">
       {form.form.fields.map(field => <div className="enquiry-field" key={field.target}>
         <label htmlFor={`petcare-${field.target}`}>{field.label}{field.required && <span aria-hidden="true"> *</span>}</label>
-        {field.control === "select" ? <select id={`petcare-${field.target}`} {...form.bind(field.target)}><option value="">Selecione</option>{field.choices.map(choice => <option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
-          : field.control === "textarea" ? <textarea id={`petcare-${field.target}`} {...form.bind(field.target)} />
-          : <input id={`petcare-${field.target}`} type={field.control === "email" ? "email" : field.control === "phone" ? "tel" : "text"} autoComplete={field.control === "email" ? "email" : field.control === "phone" ? "tel" : field.target === "nome" ? "name" : "address-level2"} {...form.bind(field.target)} />}
+        {field.control === "select" ? <select id={`petcare-${field.target}`} autoComplete="off" {...form.bind(field.target)}><option value="">Selecione</option>{field.choices.map(choice => <option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
+          : field.control === "textarea" ? <textarea id={`petcare-${field.target}`} autoComplete="off" maxLength={field.validation.maxLength ?? 2000} {...form.bind(field.target)} />
+          : field.control === "phone" ? <input id={`petcare-${field.target}`} type="tel" inputMode="tel" autoComplete="off" maxLength={24} placeholder="+55 (41) 99875-8583" {...form.bind(field.target)} value={formatPetCarePhone(String(form.values[field.target] ?? ""))} onChange={event => { form.setValues(previous => ({ ...previous, [field.target]: normalizePetCarePhone(event.target.value) })); setPhoneError(""); }} onBlur={() => { form.validate(field.target); if (!validPetCarePhone(String(form.values[field.target] ?? ""))) setPhoneError("Informe o DDD e o número completo. Para outro país, comece com + e o código do país."); }} />
+          : <input id={`petcare-${field.target}`} type={field.control === "email" ? "email" : "text"} autoComplete="off" maxLength={field.validation.maxLength ?? (field.control === "email" ? 254 : 160)} {...form.bind(field.target)} />}
+        {field.control === "phone" && <small>Brasil: +55 (DDD) número. Exterior: +código do país e número completo.</small>}
         {field.description && <small>{field.description}</small>}
-        {form.errors[field.target] && <small className="enquiry-error" id={`err-${field.target}`}>{form.errors[field.target]}</small>}
+        {(field.control === "phone" ? phoneError || form.errors[field.target] : form.errors[field.target]) && <small className="enquiry-error" id={`err-${field.target}`}>{field.control === "phone" ? phoneError || "Informe o DDD e o número completo, ou use + para outro país." : form.errors[field.target]}</small>}
       </div>)}
     </div>
     <p className="enquiry-privacy">Usaremos nome, contato, cidade e assunto apenas para responder ao pedido. Não informe dados clínicos ou informações sensíveis neste formulário. O envio não confirma agendamento.</p>

@@ -251,13 +251,13 @@ function PriceControl({ range, min, max, onCommit, immediate }: {
       )}
       <div className="flex items-center gap-2">
         <label className="sr-only" htmlFor="filter-min">Minimum price</label>
-        <input id="filter-min" inputMode="decimal" placeholder={bounds ? String(bounds.min) : "Min"} value={lo}
+        <input id="filter-min" inputMode="decimal" autoComplete="off" maxLength={12} placeholder={bounds ? String(bounds.min) : "Min"} value={lo}
           onChange={(e) => { setLo(e.target.value); if (!immediate) publish(e.target.value, hi); }}
           onBlur={release} onKeyDown={(e) => e.key === "Enter" && release()}
           className="w-full min-w-0 rounded-md border border-border bg-background px-2 py-1.5 text-sm" />
         <span className="text-muted-foreground">–</span>
         <label className="sr-only" htmlFor="filter-max">Maximum price</label>
-        <input id="filter-max" inputMode="decimal" placeholder={bounds ? String(bounds.max) : "Max"} value={hi}
+        <input id="filter-max" inputMode="decimal" autoComplete="off" maxLength={12} placeholder={bounds ? String(bounds.max) : "Max"} value={hi}
           onChange={(e) => { setHi(e.target.value); if (!immediate) publish(lo, e.target.value); }}
           onBlur={release} onKeyDown={(e) => e.key === "Enter" && release()}
           className="w-full min-w-0 rounded-md border border-border bg-background px-2 py-1.5 text-sm" />

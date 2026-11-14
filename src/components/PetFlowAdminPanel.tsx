@@ -7,7 +7,7 @@ import PetFlowPaymentSetup from "./PetFlowPaymentSetup";
 export type Lead = { id: string; date: string; nome: string; email: string; telefone: string; cidade: string; servico: string };
 
 export default function PetFlowAdminPanel() {
-  const [username, setUsername] = useState("orphew");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [leads, setLeads] = useState<Lead[] | null>(null);
   const [status, setStatus] = useState("");
@@ -43,7 +43,7 @@ export default function PetFlowAdminPanel() {
 
   async function logout() { await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin" }); setLeads(null); setPassword(""); }
 
-  if (leads === null) return <main className="admin-shell"><section className="admin-card admin-login"><span className="kicker">CONTROLE VETFLOW</span><h1>Entrar na administração</h1><p>Área privada para acompanhar os pedidos de contato do PetCare.</p><form onSubmit={login}><label htmlFor="admin-user">Usuário</label><input id="admin-user" autoComplete="username" value={username} onChange={event => setUsername(event.target.value)} required /><label htmlFor="admin-password">Senha</label><input id="admin-password" type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} required /><button className="button gold" disabled={busy}>{busy ? "Entrando…" : "Entrar"}</button></form><p className="admin-status" role="status">{status}</p></section></main>;
+  if (leads === null) return <main className="admin-shell"><section className="admin-card admin-login"><span className="kicker">CONTROLE VETFLOW</span><h1>Entrar na administração</h1><p>Área privada para acompanhar os pedidos de contato do PetCare.</p><form onSubmit={login} autoComplete="off"><label htmlFor="admin-user">Usuário</label><input id="admin-user" autoComplete="off" value={username} onChange={event => setUsername(event.target.value)} required /><label htmlFor="admin-password">Senha</label><input id="admin-password" type="password" autoComplete="off" value={password} onChange={event => setPassword(event.target.value)} required /><button className="button gold" disabled={busy}>{busy ? "Entrando…" : "Entrar"}</button></form><p className="admin-status" role="status">{status}</p></section></main>;
 
   return <main className="admin-shell petflow-admin-dashboard">
     <div className="admin-topline"><div><span className="kicker">ÁREA PROTEGIDA · VETFLOW</span><h1>Administração</h1><p>Controle deste site e dos pré-cadastros PetCare. Visitantes sem cadastro são anônimos.</p></div><div className="petflow-top-actions"><a href="#audience" className="petflow-lifetime"><strong>{lifetime ?? "—"}</strong><span>Visitas desde o início</span></a><a href="#contacts" className="petflow-lifetime"><strong>{leads.length}</strong><span>Pré-cadastros</span></a><button type="button" onClick={logout}>Sair</button></div></div>

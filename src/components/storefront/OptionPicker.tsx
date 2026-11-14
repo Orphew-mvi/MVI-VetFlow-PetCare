@@ -82,7 +82,7 @@ export default function OptionPicker({
               <span>{m.title}{m.mandatory ? " *" : ""}</span>
               {m.maxChars && <span className="tabular-nums normal-case tracking-normal">{value.length}/{m.maxChars}</span>}
             </span>
-            <textarea rows={2} value={value} maxLength={m.maxChars ?? undefined} onChange={(e) => d.setModifier(m.key, e.target.value)}
+            <textarea rows={2} autoComplete="off" value={value} maxLength={m.maxChars ?? 500} onChange={(e) => d.setModifier(m.key, e.target.value)}
               className="rounded-md border border-border bg-background px-3 py-2 text-sm normal-case tracking-normal text-foreground" />
           </label>
         );
@@ -151,6 +151,7 @@ function NotifyMe({ detail: d }: { detail: UseProductDetail }) {
   if (d.notifyResult === "already-subscribed") return <p className="text-xs text-muted-foreground">You're already on the list for this item.</p>;
   return (
     <form
+      autoComplete="off"
       className="flex flex-col gap-1.5"
       onSubmit={(e) => {
         e.preventDefault();
@@ -159,7 +160,7 @@ function NotifyMe({ detail: d }: { detail: UseProductDetail }) {
     >
       <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground" htmlFor="notify-email">Notify me when it's back</label>
       <div className="flex gap-2">
-        <input id="notify-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
+        <input id="notify-email" type="email" autoComplete="off" maxLength={254} required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
           className="min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground" />
         <button type="submit" disabled={d.notifying} className="rounded-control border border-foreground px-4 py-2 text-sm font-medium disabled:opacity-50">
           {d.notifying ? "Saving…" : "Notify me"}
