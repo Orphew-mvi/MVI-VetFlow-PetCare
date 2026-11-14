@@ -30,6 +30,7 @@ O servidor local pode exigir autenticação Wix. Para gerar a versão de produç
 
 - `src/`: páginas, componentes, estilos e rotas de servidor.
 - `public/`: imagens, vídeos e outros recursos públicos usados pelo site.
+- `scripts/`: utilitários para gerar o mapa e o guia público de serviços.
 - `GOVERNANCA.md`: diretrizes visuais e de apresentação.
 
 ## Privacidade
