@@ -2,15 +2,37 @@
 import CartButton from "../components/storefront/CartButton";
 import CartDrawer from "../components/storefront/CartDrawer";
 import "../styles/global.css";
-interface Props { title: string; description?: string; }
-const { title, description } = Astro.props;
+interface Props { title: string; description?: string; socialTitle?: string; }
+const { title, description, socialTitle } = Astro.props;
+const pageTitle = socialTitle ?? `MVI VetFlow - ${title}`;
+const socialBrand = "MVI Pet Flow — Pet Care";
+const publicOrigin = "https://www.mvipetcare.net";
+const hasSeoSlot = Astro.slots.has("seo-tags");
 ---
 <!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  {!Astro.slots.has("seo-tags") && <title>MVI VetFlow - {title}</title>}
+  <link rel="icon" type="image/png" sizes="32x32" href="/mvi-favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/mvi-favicon-48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/mvi-touch-icon.png" />
+  {!hasSeoSlot && <title>{pageTitle}</title>}
   {description && <meta name="description" content={description} />}
+  {!hasSeoSlot && <>
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:site_name" content={socialBrand} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, publicOrigin).href} />
+    <meta property="og:image" content={`${publicOrigin}/mvi-share-logo.png`} />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:image:alt" content="Logotipo da MVI" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={`${publicOrigin}/mvi-share-logo.png`} />
+  </>}
   <slot name="seo-tags" />
 </head>
 <body>
