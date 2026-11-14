@@ -29,7 +29,19 @@ try {
 } catch { /* pré-cadastro e WhatsApp continuam disponíveis */ }
 ---
 <SiteLayout title="Atendimento PetCare" description="Converse sobre atendimento veterinário integrativo PetCare. Disponibilidade e detalhes confirmados individualmente.">
-  <section class="care-hero"><div class="wrap"><span class="kicker">PETCARE · ATENDIMENTO</span><h1>Vamos entender o que seu pet precisa.</h1><p>Conte sua cidade, a espécie do pet e o motivo do contato. A disponibilidade e o melhor encaminhamento serão confirmados individualmente.</p><a class="button gold" href={contact} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a></div></section>
+  <section class="care-hero">
+    <div class="wrap care-hero-layout">
+      <div class="care-hero-copy">
+        <span class="kicker">PETCARE · ATENDIMENTO</span>
+        <h1>Vamos entender o que seu pet precisa.</h1>
+        <p>Conte sua cidade, a espécie do pet e o motivo do contato. A disponibilidade e o melhor encaminhamento serão confirmados individualmente.</p>
+        <a class="button gold" href={contact} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
+      </div>
+      <figure class="care-hero-logo">
+        <img src="/images/mvi-careflow-master.jpg" width="1024" height="1024" alt="Logotipo MVI CareFlow com cruz veterinária e lobo" decoding="async" />
+      </figure>
+    </div>
+  </section>
   <section class="wrap" id="servicos"><span class="kicker">CATÁLOGO PETCARE</span><h2>Escolha o cuidado.</h2><p>Preços informados pelo responsável. Monte o carrinho e pague com Pix ou cartão pelo Mercado Pago, sem boleto. O pagamento não agenda atendimento nem define um protocolo: confirme data, local, indicação clínica e detalhes do preparo com a equipe.</p><div class="features services-grid">{services.map(service => <article><b>{service.number}</b><h3>{service.title}</h3><p>{service.description}</p><strong class="service-price-pending">{service.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong>{serviceIds.get(service.title) && <ServiceCartButton client:load serviceId={serviceIds.get(service.title)!} title={service.title} price={service.price} />}<div class="service-actions"><a href="#pre-cadastro">Fazer pré-cadastro →</a><a href={serviceLink(service.title, service.price)} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></article>)}</div><p class="services-note">Atendimento no Litoral, em Curitiba e na Região Metropolitana, conforme agenda. Vacinas dependem de avaliação e disponibilidade. O óleo ozonizado é personalizado; composição, volume, uso e entrega são confirmados por contato. Procedimentos cirúrgicos, demais terapias integrativas e antiparasitários recebem orçamento individual após avaliação.</p></section>
   <section class="enquiry-section" id="pre-cadastro"><div class="wrap enquiry-layout"><div><span class="kicker">SOLICITAR ATENDIMENTO</span><h2>Faça um pré-cadastro rápido.</h2><p>Informe seus dados de contato, cidade e o assunto da conversa. Confirmaremos disponibilidade e próximos passos antes de qualquer agendamento.</p><a href={contact} target="_blank" rel="noopener noreferrer">Prefere conversar agora? Abrir WhatsApp →</a></div><PetCareEnquiryForm client:load initialForm={initialForm} /></div></section>
   <section class="wrap"><span class="kicker">COMO FUNCIONA</span><h2>Uma conversa clara, passo a passo.</h2><div class="features"><article><b>01</b><h3>Você conta</h3><p>Informe sua cidade, espécie do pet e o que motivou o contato. Evite enviar dados clínicos sensíveis antes de combinar um canal apropriado.</p></article><article><b>02</b><h3>Confirmamos</h3><p>A equipe verifica disponibilidade, local, formato e valores antes de agendar.</p></article><article><b>03</b><h3>Combinamos</h3><p>Você recebe a orientação sobre os próximos passos. Uma mensagem não substitui avaliação veterinária.</p></article></div></section>

@@ -1,7 +1,7 @@
 // Product-specific artwork served by this site. These IDs belong only to PetFlow.
 const images: Record<string, string> = {
   "4be61856-8bfe-4733-af82-6080f033414d": "/images/protocolo-obstetrico-pequeno-porte.png",
-  "75817cc0-6b40-45e5-bed8-92147ee08845": "/images/endoscopia-veterinaria-mvi-amigos.png",
+  "75817cc0-6b40-45e5-bed8-92147ee08845": "/images/endoscopia-mvi-catalogo-1x1.webp",
   "267aae1e-e9de-4813-b0de-d90e8b714132": "/images/consulta-clinica-geral-pequeno-porte-trio.png",
   "2f3f0e00-b114-4d90-aa76-3f5201909611": "/images/consulta-clinica-geral-grande-porte.png",
   "983127cf-10cc-4cf9-9989-f3c0171afc11": "/images/oleo-ozonizado-mvi-elixir.png",
