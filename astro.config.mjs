@@ -11,7 +11,7 @@ import wixHostingAdapter from "@wix/astro-wix-hosting-adapter";
 export default defineConfig({
   vite: { plugins: [tailwindcss()] },
   integrations: [wix(), wixPages(), react()],
-  security: { checkOrigin: false },
+  security: { checkOrigin: true },
   adapter: wixHostingAdapter({ configPath: ".wix/wrangler.json" }),
 
   image: {

@@ -1,13 +1,9 @@
 ---
 import CartButton from "../components/storefront/CartButton";
 import CartDrawer from "../components/storefront/CartDrawer";
-import { fetchCategories } from "../wix/storefront/catalog";
-import type { Category } from "../wix/storefront/types";
 import "../styles/global.css";
 interface Props { title: string; description?: string; }
 const { title, description } = Astro.props;
-let navCategories: Category[] = [];
-try { navCategories = (await fetchCategories()).slice(0, 6); } catch { /* nav still works */ }
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -21,7 +17,7 @@ try { navCategories = (await fetchCategories()).slice(0, 6); } catch { /* nav st
   <header class="site-header"><div class="header-inner">
     <a class="brand" href="/" aria-label="MVI VetFlow, início"><img src="/images/mvi-logo.webp" alt="" width="45" height="45" /><span class="brand-copy"><strong><span class="brand-mvi">MVI</span> <span class="brand-vetflow">VetFlow</span></strong><small><span class="brand-petcare">PetCare</span> · <span class="brand-connecta">Pet Connecta</span></small></span></a>
     <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Abrir menu"><span></span><span></span><span></span></button>
-    <nav id="primary-nav" aria-label="Navegação principal"><a href="/">Início</a><a href="/atendimento">Atendimento</a><a href="/shop">Catálogo</a>{navCategories.map(c => <a class="category-link" href={`/category/${c.slug}`}>{c.name}</a>)}<CartButton client:only="react" /><a class="admin-link" href="/controle" aria-label="Abrir administração MVI VetFlow"><span aria-hidden="true">⚙</span> Admin</a></nav>
+    <nav id="primary-nav" aria-label="Navegação principal"><a href="/">Início</a><a href="/atendimento">Atendimento</a><a href="/shop">Catálogo</a><CartButton client:only="react" /></nav>
   </div></header>
   <main><slot /></main>
   <footer><div class="footer-inner"><div><strong><span class="brand-mvi">MVI</span> <span class="brand-vetflow">VetFlow</span> | <span class="brand-petcare">PetCare</span> | <span class="brand-connecta">Pet Connecta</span></strong><p>Atendimento veterinário e projetos digitais de cuidado animal.</p></div><div class="footer-right"><a href="/atendimento">Converse sobre atendimento</a><p>Disponibilidade, local e indicação clínica são confirmados individualmente.</p><small class="production-signature">Produzido por <span>MVI Tech</span> <span aria-hidden="true">|</span> <em>Orphew</em> ©</small></div></div></footer>

@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     const date = localDay.split("-").reverse().join("/");
     const hour = new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit" }).format(now);
     const stateReport = states.length ? states.map(state => `${state.code}: ${state.count} visita(s)`).join("\n") : "Nenhum estado brasileiro identificado.";
-    const message = `🧪 TESTE — resumo de visitas do MVI VetFlow\n\nData: ${date}, parcial até ${hour} (São Paulo)\nContador próprio, ativo desde 11/11/2026: ${total} visita(s) hoje\n\nPor estado brasileiro:\n${stateReport}\nFora do Brasil ou sem estado identificado: ${total - known}\n\nUma nova visita é contada após 30 minutos. Acessos ao painel e robôs conhecidos não entram.\n\nPainel: https://www.mvipetcare.net/controle`;
+    const message = `🧪 TESTE — resumo de visitas do MVI VetFlow\n\nData: ${date}, parcial até ${hour} (São Paulo)\nContador próprio, ativo desde 11/11/2026: ${total} visita(s) hoje\n\nPor estado brasileiro:\n${stateReport}\nFora do Brasil ou sem estado identificado: ${total - known}\n\nUma nova visita é contada após 30 minutos. Acessos ao painel e robôs conhecidos não entram.\n\nPainel: https://www.mvipetcare.net/gestao-mvi`;
     await botCall(token, "sendMessage", { chat_id: chatId, text: message, disable_web_page_preview: true });
     return json({ sent: true, date, total, stateCount: states.length });
   } catch {

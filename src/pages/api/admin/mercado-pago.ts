@@ -3,6 +3,7 @@ import { auth } from "@wix/essentials";
 import { items } from "@wix/data";
 import { ADMIN_COOKIE, checkSession } from "../../../lib/petflow-admin-auth";
 import { readSecret, saveSecret } from "../../../lib/petflow-telegram";
+import { readJsonObject } from "../../../lib/petflow-request";
 
 export const prerender = false;
 const tokenName = "PETFLOW_MERCADOPAGO_ACCESS_TOKEN";
@@ -19,9 +20,9 @@ export const GET: APIRoute = async ({ cookies }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (request.headers.get("origin") !== "https://www.mvipetcare.net") return json({ error: "Origem inválida." }, 403);
   if (!await checkSession(cookies.get(ADMIN_COOKIE)?.value)) return json({ error: "Não autenticado." }, 401);
-  const body = await request.json().catch(() => null) as { action?: string; token?: string } | null;
+  const body = await readJsonObject(request, 1024);
   if (body?.action === "save") {
-    const token = String(body.token || "").trim();
+    const token = typeof body.token === "string" ? body.token.trim() : "";
     if (!/^APP_USR-[A-Za-z0-9-]{40,200}$/.test(token)) return json({ error: "Use o Access Token de produção do Mercado Pago." }, 400);
     await saveSecret(enabledName, "false");
     await saveSecret(tokenName, token);
@@ -59,7 +60,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return json({ configured: true, active: true });
     } catch (error) {
       await saveSecret(enabledName, "false");
-      return json({ error: error instanceof Error ? error.message : "Falha na validação." }, 502);
+      return json({ error: "Não foi possível validar o provedor de pagamentos. Tente novamente no painel." }, 502);
     }
   }
   return json({ error: "Ação inválida." }, 400);

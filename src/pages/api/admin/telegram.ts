@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { ADMIN_COOKIE, checkSession } from "../../../lib/petflow-admin-auth";
 import { botCall, CHAT_NAME, readSecret, saveSecret, TOKEN_NAME } from "../../../lib/petflow-telegram";
+import { readJsonObject } from "../../../lib/petflow-request";
 
 const headers = { "Content-Type": "application/json", "Cache-Control": "no-store" };
 const json = (body: object, status = 200) => new Response(JSON.stringify(body), { status, headers });
@@ -20,10 +21,10 @@ export const GET: APIRoute = async ({ cookies }) => {
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (request.headers.get("origin") !== "https://www.mvipetcare.net") return json({ error: "Origem inválida." }, 403);
   if (!await checkSession(cookies.get(ADMIN_COOKIE)?.value)) return json({ error: "Não autenticado." }, 401);
-  const body = await request.json().catch(() => null) as { action?: string; token?: string; code?: string } | null;
+  const body = await readJsonObject(request, 1024);
   if (!body) return json({ error: "Pedido inválido." }, 400);
   if (body.action === "save-token") {
-    const token = String(body.token || "").trim();
+    const token = typeof body.token === "string" ? body.token.trim() : "";
     if (!validToken(token)) return json({ error: "Token inválido." }, 400);
     try {
       const bot = await botCall<{ username: string }>(token, "getMe");
@@ -40,7 +41,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return json({ code, link: `https://t.me/${me.username}?start=${code}` });
   }
   if (body.action === "connect") {
-    const code = String(body.code || "");
+    const code = typeof body.code === "string" ? body.code : "";
     if (!/^petflow_[0-9a-f]{20}$/.test(code)) return json({ error: "Código inválido." }, 400);
     try {
       const updates = await botCall<Array<{ message?: { text?: string; chat?: { id: number; type: string } } }>>(token, "getUpdates", { timeout: 0, limit: 100, allowed_updates: ["message"] });

@@ -32,7 +32,7 @@ export async function notifyNewLead(lead: { nome?: string; email?: string; telef
   const [token, chatId] = await Promise.all([readSecret(TOKEN_NAME), readSecret(CHAT_NAME)]);
   if (!token || !chatId) return;
   const safe = (value?: string) => String(value || "—").replace(/[<>]/g, "").slice(0, 180);
-  await botCall(token, "sendMessage", { chat_id: chatId, text: `🐾 Novo pré-cadastro PetCare\nNome: ${safe(lead.nome)}\nContato: ${safe(lead.telefone)}\nE-mail: ${safe(lead.email)}\nCidade: ${safe(lead.cidade)}\nServiço: ${safe(lead.servico)}\n\nControle: https://www.mvipetcare.net/controle`, disable_web_page_preview: true });
+  await botCall(token, "sendMessage", { chat_id: chatId, text: `🐾 Novo pré-cadastro PetCare\nNome: ${safe(lead.nome)}\nContato: ${safe(lead.telefone)}\nE-mail: ${safe(lead.email)}\nCidade: ${safe(lead.cidade)}\nServiço: ${safe(lead.servico)}\n\nControle: https://www.mvipetcare.net/gestao-mvi`, disable_web_page_preview: true });
 }
 
 export { TOKEN_NAME, CHAT_NAME };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useProductDetail } from "../../hooks/storefront/useProductDetail";
 import OptionPicker from "./OptionPicker";
 import type { ProductDetail } from "../../wix/storefront/types";
+import { safeCatalogHtml } from "../../lib/petflow-safe-html";
 
 export default function ProductDetailView(props: { initial?: ProductDetail | null; slug?: string }) {
   const d = useProductDetail(props);
@@ -26,8 +27,8 @@ export default function ProductDetailView(props: { initial?: ProductDetail | nul
         {d.pricePerUnit && <p className="text-sm text-muted-foreground">{d.pricePerUnit}</p>}
         {p.discountNames.length > 0 && <p className="text-sm text-muted-foreground">{p.discountNames.join(" · ")}</p>}
         <div className="mt-5"><OptionPicker detail={d} showQuantity /></div>
-        {p.descriptionHtml && <div className="prose mt-8" dangerouslySetInnerHTML={{ __html: p.descriptionHtml }} />}
-        {p.infoSections.map((section, i) => <section key={i} className="mt-6 border-t border-border pt-4"><h2 className="font-bold">{section.title}</h2><div dangerouslySetInnerHTML={{ __html: section.html }} /></section>)}
+        {p.descriptionHtml && <div className="prose mt-8" dangerouslySetInnerHTML={{ __html: safeCatalogHtml(p.descriptionHtml) }} />}
+        {p.infoSections.map((section, i) => <section key={i} className="mt-6 border-t border-border pt-4"><h2 className="font-bold">{section.title}</h2><div dangerouslySetInnerHTML={{ __html: safeCatalogHtml(section.html) }} /></section>)}
       </div>
     </div>
   </div>;

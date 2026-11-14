@@ -3,6 +3,7 @@ import { auth } from "@wix/essentials";
 import { items } from "@wix/data";
 import { checkout } from "@wix/ecom";
 import { redirects } from "@wix/redirects";
+import { readJsonObject } from "../../../lib/petflow-request";
 
 export const prerender = false;
 const headers = { "Content-Type": "application/json", "Cache-Control": "no-store" };
@@ -12,9 +13,9 @@ export const POST: APIRoute = async ({ request }) => {
   if (request.headers.get("origin") !== origin) return new Response(JSON.stringify({ error: "Origem não permitida." }), { status: 403, headers });
   let stage = "validate";
   try {
-    const body = await request.json();
+    const body = await readJsonObject(request);
     const requested = Array.isArray(body?.items) ? body.items : [];
-    if (!requested.length || requested.length > 20 || requested.some((entry: { id?: unknown; quantity?: unknown }) => typeof entry.id !== "string" || !/^[0-9a-f-]{36}$/i.test(entry.id) || typeof entry.quantity !== "number" || !Number.isInteger(entry.quantity) || entry.quantity < 1 || entry.quantity > 10)) return new Response(JSON.stringify({ error: "Carrinho inválido." }), { status: 400, headers });
+    if (!requested.length || requested.length > 20 || requested.some((entry: { id?: unknown; quantity?: unknown } | null) => !entry || typeof entry !== "object" || typeof entry.id !== "string" || !/^[0-9a-f-]{36}$/i.test(entry.id) || typeof entry.quantity !== "number" || !Number.isInteger(entry.quantity) || entry.quantity < 1 || entry.quantity > 10)) return new Response(JSON.stringify({ error: "Carrinho inválido." }), { status: 400, headers });
     stage = "catalog";
     const query = auth.elevate(items.query);
     const catalog = await query("PetFlowServices", { paging: { limit: 100, offset: 0 }, fields: ["title", "price"] }, { consistentRead: true });
@@ -34,8 +35,8 @@ export const POST: APIRoute = async ({ request }) => {
     const checkoutUrl = session?.redirectSession?.fullUrl;
     if (!checkoutUrl) throw new Error("Checkout indisponível.");
     return new Response(JSON.stringify({ checkoutUrl }), { status: 200, headers });
-  } catch (cause) {
-    console.error("PetFlow checkout failed", stage, cause);
+  } catch {
+    console.error("PetFlow checkout failed at stage", stage);
     return new Response(JSON.stringify({ error: "Não foi possível iniciar o pagamento. Tente novamente." }), { status: 503, headers });
   }
 };

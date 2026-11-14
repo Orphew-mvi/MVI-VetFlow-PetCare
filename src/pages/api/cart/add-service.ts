@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { auth } from "@wix/essentials";
 import { items } from "@wix/data";
 import { wixFetch } from "../../../wix/sdk";
+import { readJsonObject } from "../../../lib/petflow-request";
 
 export const prerender = false;
 const headers = { "Content-Type": "application/json", "Cache-Control": "no-store" };
@@ -10,7 +11,7 @@ const collectionId = "PetFlowServices";
 export const POST: APIRoute = async ({ request }) => {
   if (request.headers.get("origin") !== "https://www.mvipetcare.net") return new Response(JSON.stringify({ error: "Origem não permitida." }), { status: 403, headers });
   try {
-    const { serviceId } = await request.json();
+    const serviceId = (await readJsonObject(request, 1024))?.serviceId;
     if (typeof serviceId !== "string" || !/^[0-9a-f-]{36}$/i.test(serviceId)) return new Response(JSON.stringify({ error: "Serviço inválido." }), { status: 400, headers });
     const query = auth.elevate(items.query);
     const catalog = await query(collectionId, { paging: { limit: 100, offset: 0 }, fields: ["title", "price"] }, { consistentRead: true });

@@ -29,7 +29,9 @@
     "@wix/secrets": "^1.0.75",
     "@wix/seo": "^1.0.79",
     "@wix/stores": "^1.0.888",
-    "astro": "^7.3.2",
+    "astro": "^7.4.12",
+    "sanitize-html": "^2.18.2",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.1.7",
     "typescript": "^5.8.3"
   },
@@ -37,6 +39,7 @@
     "@astrojs/react": "^6.0.6",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
+    "@types/sanitize-html": "^2.16.2",
     "@wix/astro-wix-hosting-adapter": "^3.0.0",
     "@wix/cli": "^1.1.92",
     "react": "18.3.1",

@@ -3,6 +3,7 @@ import { auth } from "@wix/essentials";
 import { items } from "@wix/data";
 import { readSecret } from "../../../lib/petflow-telegram";
 import { serviceByProductId } from "../../../lib/petflow-service-products";
+import { readJsonObject } from "../../../lib/petflow-request";
 
 export const prerender = false;
 const origin = "https://www.mvipetcare.net";
@@ -21,9 +22,9 @@ export const POST: APIRoute = async ({ request }) => {
   const [token, enabled] = await Promise.all([readSecret(tokenName), readSecret(enabledName)]);
   if (!token || enabled !== "true") return json({ error: "Pagamento em configuração." }, 503);
 
-  const body = await request.json().catch(() => null) as { lines?: Array<{ productId?: unknown; quantity?: unknown }> } | null;
+  const body = await readJsonObject(request);
   const lines = body?.lines;
-  if (!Array.isArray(lines) || lines.length < 1 || lines.length > 10 || lines.some(line => typeof line.productId !== "string" || !serviceByProductId[line.productId] || !Number.isInteger(line.quantity) || Number(line.quantity) < 1 || Number(line.quantity) > 10)) {
+  if (!Array.isArray(lines) || lines.length < 1 || lines.length > 10 || lines.some(line => !line || typeof line !== "object" || typeof line.productId !== "string" || !serviceByProductId[line.productId] || typeof line.quantity !== "number" || !Number.isInteger(line.quantity) || line.quantity < 1 || line.quantity > 10)) {
     return json({ error: "Carrinho inválido." }, 400);
   }
   const distinct = new Set(lines.map(line => line.productId));
