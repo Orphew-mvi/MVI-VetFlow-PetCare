@@ -5,7 +5,7 @@ import "../styles/global.css";
 interface Props { title: string; description?: string; socialTitle?: string; }
 const { title, description, socialTitle } = Astro.props;
 const pageTitle = socialTitle ?? `MVI VetFlow - ${title}`;
-const socialBrand = "MVI Pet Flow — Pet Care";
+const socialBrand = "MVI VetFlow | PetCare | PetConnecta";
 const publicOrigin = "https://www.mvipetcare.net";
 const hasSeoSlot = Astro.slots.has("seo-tags");
 ---
@@ -19,7 +19,7 @@ const hasSeoSlot = Astro.slots.has("seo-tags");
   {!hasSeoSlot && <title>{pageTitle}</title>}
   {description && <meta name="description" content={description} />}
   {!hasSeoSlot && <>
-    <meta property="og:title" content={pageTitle} />
+    <meta property="og:title" content={socialTitle ? socialBrand : pageTitle} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:site_name" content={socialBrand} />
     <meta property="og:type" content="website" />
@@ -29,7 +29,7 @@ const hasSeoSlot = Astro.slots.has("seo-tags");
     <meta property="og:image:height" content="600" />
     <meta property="og:image:alt" content="Logotipo da MVI" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:title" content={socialTitle ? socialBrand : pageTitle} />
     {description && <meta name="twitter:description" content={description} />}
     <meta name="twitter:image" content={`${publicOrigin}/mvi-share-logo.png`} />
   </>}
